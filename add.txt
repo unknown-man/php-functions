@@ -1,3 +1,4 @@
+require 'conn.php';
 function insert($table,$post){
 echo "INSERT INTO $table"."(";
 $r = count($post)-1;
@@ -17,7 +18,13 @@ for ($i=0; $i < $r; $i++) {
 }
 echo ")";
 }
+
 if (isset($_POST['table_name'])) {
     $table=$_POST['table_name'];
     $query = insert($table,$_POST);
+  $insert = mysqli_query($conn,$query);
+if ($insert) {
+header('Location: http://www.example.com/');
 }
+}
+

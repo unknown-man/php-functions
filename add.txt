@@ -1,7 +1,7 @@
-function insert($table,$x){
+function insert($table,$post){
 echo "INSERT INTO $table"."(";
-$r = count($x)-1;
-$p = array_keys($x);
+$r = count($post)-1;
+$p = array_keys($post);
 for ($i=0; $i < $r; $i++) {
   echo $p[$i];
   if ($i <= $r-2) {
@@ -10,10 +10,14 @@ for ($i=0; $i < $r; $i++) {
 }
 echo ") VALUES(";
 for ($i=0; $i < $r; $i++) {
-  echo base64_encode($x[$p[$i]]);
+  echo base64_encode($post[$p[$i]]);
   if ($i <= $r-2) {
     echo ",";
   }
 }
 echo ")";
+}
+if (isset($_POST['table_name'])) {
+    $table=$_POST['table_name'];
+    $query = insert($table,$_POST);
 }

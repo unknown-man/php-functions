@@ -1,7 +1,10 @@
+<?php
+//table name before submit button as hidden
+//submit button name add
 require 'conn.php';
 function insert($table,$post){
 echo "INSERT INTO $table"."(";
-$r = count($post)-1;
+$r = count($post)-2;
 $p = array_keys($post);
 for ($i=0; $i < $r; $i++) {
   echo $p[$i];
@@ -11,7 +14,7 @@ for ($i=0; $i < $r; $i++) {
 }
 echo ") VALUES(";
 for ($i=0; $i < $r; $i++) {
-  echo base64_encode($post[$p[$i]]);
+  echo "'".base64_encode($post[$p[$i]])."'";
   if ($i <= $r-2) {
     echo ",";
   }
@@ -19,12 +22,14 @@ for ($i=0; $i < $r; $i++) {
 echo ")";
 }
 
-if (isset($_POST['table_name'])) {
+if (isset($_POST['add'])) {
     $table=$_POST['table_name'];
-    $query = insert($table,$_POST);
+    ob_start();
+    insert($table,$_POST);
+    $query = ob_get_clean();
   $insert = mysqli_query($conn,$query);
 if ($insert) {
 header('Location: http://www.example.com/');
 }
 }
-
+?>

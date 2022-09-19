@@ -1,13 +1,16 @@
 <?php
+require 'conn.php';
 //table name before submit button as hidden
 //submit button name add without value
 //images must be sent with array
+//check uploads and header location
 //............ORDER BY chiky bum....
 function insert($table,$post,$files){
-$upload ="upload/";
+$upload ="../uploads/";
+
+
 echo "INSERT INTO $table"."(";
 //echo     $files['f']['name'][2]; //1.jpg
-echo "<br>";
 $file_num = count($files); ////  2 number of  inputs
 $file_key=array_keys($files);///array
 for ($i=0; $i <= $file_num-1; $i++) {
@@ -33,6 +36,7 @@ for ($i=0; $i <= $file_num-1; $i++) {
            $file_num1 = count($file_key1);/////images per input
            echo "'";
      for ($k=0; $k <= $file_num1 -1 ; $k++) {
+       if (!empty(trim($files_name[$k]))) {
        $name=time().$k.$files_name[$k];///unique name
       echo base64_encode($name); ///images of f ,images of g
             move_uploaded_file($tmp_name[$k],$upload.$name);
@@ -40,12 +44,12 @@ for ($i=0; $i <= $file_num-1; $i++) {
              if ($k <= $file_num2-2) {
               echo "hellopapa";
             }
-      echo "<br>";
      }
+   }
         echo "',";
 }
 for ($i=0; $i < $r; $i++) {
-  echo "'".($post[$p[$i]])."'";
+  echo "'".base64_encode($post[$p[$i]])."'";
   if ($i <= $r-2) {
     echo ",";
   }
@@ -59,7 +63,7 @@ if (isset($_POST['add'])) {
     $query = ob_get_clean();
     $insert = mysqli_query($conn,$query);
   if ($insert) {
-  header('Location: http://www.example.com/');
+header("location: ../../index.php?pg=data/$table.php");
   }
 }
 ?>

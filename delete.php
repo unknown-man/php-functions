@@ -1,3 +1,4 @@
+<?php
 if (isset($_GET['table'])) {
     $table=$_GET['table'];
     $id=$_GET['delid'];
@@ -7,3 +8,4 @@ if ($delete) {
 header("location: index.php?pg=data/$table.php");
 }
 }
+?>

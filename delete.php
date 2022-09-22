@@ -1,9 +1,11 @@
 <?php
+require 'conn.php';
+
 $upload="uploads/";
 if (isset($_GET['table'])) {
     $table=$_GET['table'];
     $id=$_GET['delid'];
-
+    
     if ($table=="plannar") {
       $file=mysqli_query($conn,"SELECT * FROM $table WHERE id ='$id'");
       $f=mysqli_fetch_assoc($file);

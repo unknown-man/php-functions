@@ -49,19 +49,16 @@ header("location: ../../index.php?pg=data/$table.php");
 
 
 
+
 //table name before submit button as hidden
 //id befoe submit button as hidden
 //submit button name edit
-
+require 'conn.php';
 function update($table,$post,$files,$id){
-  $upload="";
+  $upload="../uploads/";
   $r = count($post)-3;
   $p = array_keys($post);
   echo "UPDATE $table SET ";
-
-// echo "<pre>";
-// print_r($files);
-// echo "</pre>";
 
   $file_num = count($files); ////  2 number of  inputs
   $file_key=array_keys($files);///array
@@ -75,12 +72,12 @@ function update($table,$post,$files,$id){
              $file_num1 = count($file_key1);/////images per input
 if (!empty(trim($files_name[0]))) {
 
-             echo $file_key[$i]." = '";
+             echo ($file_key[$i])." = '";
 
        for ($k=0; $k <= $file_num1 -1 ; $k++) {
          if (!empty(trim($files_name[$k]))) {
          $name=time().$k.$files_name[$k];///unique name
-        echo ($name); ///images of f ,images of g
+        echo base64_encode($name); ///images of f ,images of g
               move_uploaded_file($tmp_name[$k],$upload.$name);
             $file_num2 = count($files_name);
                if ($k <= $file_num2-2) {
@@ -92,9 +89,8 @@ if (!empty(trim($files_name[0]))) {
   }
 }
 
-
   for ($i=0; $i < $r; $i++) {
-    echo $p[$i]." = '".($post[$p[$i]])."'";
+    echo $p[$i]." = '".base64_encode($post[$p[$i]])."'";
     if ($i <= $r-2) {
       echo ", ";
       }
@@ -108,13 +104,11 @@ if (isset($_POST['edit'])) {
     ob_start();
     update($table,$_POST,$_FILES,$id);
     $query = ob_get_clean();
-echo $query;
-//  $update = mysqli_query($conn,$query);
-// if ($update) {
-// header("location: ../index.php?pg=body/$table.php");
-// }
+//echo $query;
+ $update = mysqli_query($conn,$query);
+if ($update) {
+header("location: ../index.php?pg=body/$table.php");
 }
-
-
+}
 
 
